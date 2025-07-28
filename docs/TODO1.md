@@ -27,22 +27,22 @@
 
 ## 🟢 Phase 2: Study Mode & Flashcard System
 
-* [ ] **Create Category Selection Page for Study Mode**
+* [x] **Create Category Selection Page for Study Mode**
   ✅ *Acceptance:* Lists available decks from data; user can select a deck.
 
-* [ ] **Build Flashcard component**
+* [x] **Build Flashcard component**
 
-  * [ ] Show Russian side by default
-  * [ ] Flip to English side
+  * [x] Show Russian side by default
+  * [x] Flip to English side
     ✅ *Acceptance:* Card flips on click/tap, front shows Russian, back shows English.
 
 * [ ] **Display “✅ Right” and “❌ Wrong” buttons after flip**
   ✅ *Acceptance:* Buttons appear only after flip and record user input.
 
-* [ ] **Track incorrect cards in state**
+* [x] **Track incorrect cards in state**
   ✅ *Acceptance:* Cards marked wrong are stored in session state for redo.
 
-* [ ] **Allow progressing through flashcards one by one**
+* [x] **Allow progressing through flashcards one by one**
   ✅ *Acceptance:* User can study the full deck sequentially.
 
 * [ ] **Persist session responses in `localStorage`**
