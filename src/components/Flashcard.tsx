@@ -10,12 +10,15 @@ interface FlashcardProps {
 }
 
 const Flashcard: FC<FlashcardProps> = ({ card, onNext, onMarkCorrect, onMarkIncorrect }) => {
+  // Tracks whether the card front/back is shown
   const [isFlipped, setIsFlipped] = useState(false);
 
+  // Flip the card between Russian (front) and English (back)
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
   };
 
+  // On correct/incorrect, record answer, reset flip, and advance
   const handleCorrect = () => {
     onMarkCorrect();
     setIsFlipped(false);

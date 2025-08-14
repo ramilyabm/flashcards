@@ -4,6 +4,9 @@ import CategorySelection from '../components/CategorySelection';
 import Flashcard from '../components/Flashcard';
 import { getCardsByDeck, getDeckById } from '../data/cards';
 import type { Card } from '../data/cards';
+import ProgressBar from '../components/ProgressBar';
+import CompletionStats from '../components/CompletionStats';
+import AppButton from '../components/AppButton';
 
 interface StudyProps {
   onNavigateHome: () => void;
@@ -46,7 +49,7 @@ const Study: FC<StudyProps> = ({ onNavigateHome }) => {
       setCorrectCards([...correctCards, currentCard.id]);
     }
     // Remove from incorrect if it was there
-    setIncorrectCards(incorrectCards.filter(id => id !== currentCard.id));
+    setIncorrectCards(incorrectCards.filter((id) => id !== currentCard.id));
   };
 
   const handleMarkIncorrect = () => {
@@ -55,7 +58,7 @@ const Study: FC<StudyProps> = ({ onNavigateHome }) => {
       setIncorrectCards([...incorrectCards, currentCard.id]);
     }
     // Remove from correct if it was there
-    setCorrectCards(correctCards.filter(id => id !== currentCard.id));
+    setCorrectCards(correctCards.filter((id) => id !== currentCard.id));
   };
 
   const handleRestart = () => {
@@ -67,10 +70,7 @@ const Study: FC<StudyProps> = ({ onNavigateHome }) => {
   // Show category selection if no deck is selected
   if (!selectedDeck) {
     return (
-      <CategorySelection 
-        onSelectDeck={handleSelectDeck}
-        onBack={onNavigateHome}
-      />
+      <CategorySelection onSelectDeck={handleSelectDeck} onBack={onNavigateHome} />
     );
   }
 
@@ -78,56 +78,30 @@ const Study: FC<StudyProps> = ({ onNavigateHome }) => {
   if (currentCardIndex === -1) {
     const deck = getDeckById(selectedDeck);
     const accuracy = cards.length > 0 ? Math.round((correctCards.length / cards.length) * 100) : 0;
-    
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <div className="max-w-lg w-full bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-10 text-center border border-white/20">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            🎉 Deck Complete!
-          </h1>
-          <h2 className="text-xl text-blue-600 font-semibold mb-6">
-            {deck?.name}
-          </h2>
-          
-          <div className="bg-gray-50 rounded-lg p-6 mb-6">
-            <div className="text-2xl font-bold text-gray-800 mb-2">
-              {accuracy}% Accuracy
-            </div>
-            <div className="text-gray-600">
-              <div className="flex justify-between mb-1">
-                <span>✅ Correct:</span>
-                <span className="font-semibold text-green-600">{correctCards.length}</span>
-              </div>
-              <div className="flex justify-between mb-1">
-                <span>❌ Incorrect:</span>
-                <span className="font-semibold text-red-600">{incorrectCards.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>📊 Total:</span>
-                <span className="font-semibold">{cards.length}</span>
-              </div>
-            </div>
-          </div>
-          
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">🎉 Deck Complete!</h1>
+          <h2 className="text-xl text-blue-600 font-semibold mb-6">{deck?.name}</h2>
+
+          <CompletionStats
+            accuracyPercent={accuracy}
+            correctCount={correctCards.length}
+            incorrectCount={incorrectCards.length}
+            totalCount={cards.length}
+          />
+
           <div className="flex flex-col space-y-3">
-            <button
-              onClick={handleRestart}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
-            >
+            <AppButton intent="primary" onClick={handleRestart}>
               🔄 Study Again
-            </button>
-            <button
-              onClick={handleBack}
-              className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
-            >
+            </AppButton>
+            <AppButton intent="neutral" onClick={handleBack}>
               📚 Choose Another Deck
-            </button>
-            <button
-              onClick={onNavigateHome}
-              className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
-            >
+            </AppButton>
+            <AppButton intent="secondary" onClick={onNavigateHome}>
               🏠 Back to Home
-            </button>
+            </AppButton>
           </div>
         </div>
       </div>
@@ -143,18 +117,11 @@ const Study: FC<StudyProps> = ({ onNavigateHome }) => {
       <div className="w-full max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">
-            📚 {deck?.name}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">📚 {deck?.name}</h1>
           <div className="text-gray-600">
             Card {currentCardIndex + 1} of {cards.length}
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
-            <div 
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
-              style={{width: `${((currentCardIndex + 1) / cards.length) * 100}%`}}
-            ></div>
-          </div>
+          <ProgressBar currentIndex={currentCardIndex} total={cards.length} />
         </div>
 
         {/* Flashcard */}
@@ -167,12 +134,9 @@ const Study: FC<StudyProps> = ({ onNavigateHome }) => {
 
         {/* Back button */}
         <div className="text-center mt-8">
-          <button
-            onClick={handleBack}
-            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
-          >
+          <AppButton intent="neutral" onClick={handleBack} className="py-2 px-4">
             ← Back to Categories
-          </button>
+          </AppButton>
         </div>
       </div>
     </div>
