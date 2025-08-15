@@ -836,4 +836,3 @@ export const getCardsByDeck = (deckId: string): Card[] => {
 export const getDeckById = (deckId: string): Deck | undefined => {
   return decks.find(deck => deck.id === deckId);
 }; 
-Add 7 new categories and expand content
